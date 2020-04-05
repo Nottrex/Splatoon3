@@ -3,7 +3,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 
-	//test2
+	//test3
 
 	public void onEnable() {
 		load_Config();
