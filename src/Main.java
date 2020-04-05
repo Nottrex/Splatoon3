@@ -1,24 +1,136 @@
+import java.util.logging.Level;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main extends JavaPlugin {
+import de.nonamelabs.splatoon.game.Game;
+import de.nonamelabs.splatoon.game.GameState;
+import de.nonamelabs.splatoon.game.Item;
+import de.nonamelabs.splatoon.game.ScoreBoard;
+import de.nonamelabs.splatoon.game.events.GameFinishEvent;
+import de.nonamelabs.splatoon.util.ChatUtil;
+import de.nonamelabs.splatoon.util.TimeUtil;
+import de.nonamelabs.splatoon.util.Util;
 
-	//test3
+public class Main extends JavaPlugin implements Listener {
+	public static Main INSTANCE;
+	
+	public static ScoreBoard sb;
+	
+	public boolean autostart;	
+	public Game game;
+	
+	public void onEnable(){
+		INSTANCE = this;
+		Util.setPlugin(this);
+		TimeUtil.init();
+		
+		Util.LOGGER.log(Level.INFO,"---------------");
+		Util.LOGGER.log(Level.INFO,"Loading Plugin: Splatoon");
+		Util.LOGGER.log(Level.INFO,"Plugin by:");
+		Util.LOGGER.log(Level.INFO,"  -PhoenixofForce");
+		Util.LOGGER.log(Level.INFO,"  -Nottrex");
+		Util.LOGGER.log(Level.INFO,"---------------");
 
-	public void onEnable() {
-		load_Config();
+		Bukkit.getPluginManager().registerEvents(this, this);
+		
+		game = new Game(this);
+		
+		loadConfig();
+		
+		if (autostart) game.start();
 	}
-
+	
 	public void onDisable() {
-		save_Config();
+		HandlerList.unregisterAll((Plugin) this);
+		if (game.getGameState() != GameState.UNSTARTET) {
+			game.stop();
+		}
 	}
+	
+	public void loadConfig() {
+    	FileConfiguration config = getConfig();
+    	autostart = config.getBoolean("AutoStart", true);
+    }	
 
-	public void load_Config() {
-		FileConfiguration config = getConfig();
-
+	@EventHandler
+	public void onGameFinish(GameFinishEvent e) {
+		if (autostart) {
+			game.start();
+		}
 	}
-
-	public void save_Config() {
-		saveConfig();
+	
+	public boolean onCommand(CommandSender sender, Command command, String commandlabel, String[] args) {		
+		
+		//>---| STARTGAME |---<\\
+		
+		if (commandlabel.equalsIgnoreCase("startgame")) {
+			if(!sender.hasPermission("splatoon.start")){
+				ChatUtil.sendErrorMessage(sender, ChatUtil.ERROR_NOT_ENOUGH_PERMISSIONS);
+				return true;
+			 }
+			
+			if(game.getGameState() == GameState.UNSTARTET) {
+				game.start();
+			} else if(game.getGameState() == GameState.LOBBY) {
+				if (args.length >= 1 && args[0].equals("2")) {
+					game.setGameState(GameState.INGAME);
+				} else {
+					game.setGameState(GameState.COUNTDOWN);
+				}
+			} else if (game.getGameState() == GameState.COUNTDOWN) {
+				game.setGameState(GameState.INGAME);
+			} else {
+				ChatUtil.sendErrorMessage(sender, "Game already started!");
+				return true;
+			}
+			
+			ChatUtil.sendMessage(sender, "You started the Game!");
+			return true;
+		}
+		
+		//>---| STOPGAME |---<\\
+		
+		else if (commandlabel.equalsIgnoreCase("stopgame")) {
+			if(!sender.hasPermission("splatoon.stop")){
+				ChatUtil.sendErrorMessage(sender, ChatUtil.ERROR_NOT_ENOUGH_PERMISSIONS); 
+				return true;
+			}
+			
+			if(game.getGameState() == GameState.UNSTARTET){
+				ChatUtil.sendErrorMessage(sender, "Game not started!");
+				return true;
+			}
+			game.stop();
+			ChatUtil.sendMessage(sender, "You stopped the Game!");
+			return true;
+		}
+				
+		//>---| OP COMMANDS |---<\\
+		 		
+ 		else if (commandlabel.equalsIgnoreCase("splatoon")) {
+ 			Player p = (Player) sender;
+ 			if(args.length == 0 || !p.isOp()){
+ 				return true;
+ 			}
+ 			
+ 			if(args.length >= 2 && args[0].toString().equalsIgnoreCase("give")){
+ 				try{p.getInventory().addItem(Item.items.get(args[1].toLowerCase()));}catch(Exception e){}
+ 			} else if(args[0].toString().equalsIgnoreCase("where")){
+ 				ChatUtil.sendMessage(p, "You are here: " + ChatUtil.HIGHLIGHT_COLOR + p.getLocation().getWorld().getName());
+ 			}
+ 			
+ 			return true;
+ 		}
+		
+		return false;
 	}
 }
