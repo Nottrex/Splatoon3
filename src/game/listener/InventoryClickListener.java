@@ -42,7 +42,7 @@ public class InventoryClickListener implements Listener {
 			
 			if (event.getView().getTitle().equals("TeamSelection")) {
 				for (TeamColor c: TeamColor.values()) {
-					if (item.getItemMeta().getDisplayName().equals(c.getChatColor() + c.getName())) {
+					if (item.getType() == c.getWool()) {
 						if (game.getPlayerHandler().setTeam(p, c)) {
 							p.closeInventory();
 							Inventories.getTeamSelectionInventory(game.getPlayerHandler());

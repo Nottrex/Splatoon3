@@ -24,7 +24,7 @@ public class BurstBomb extends Weapon {
 
 	@Override
 	public ItemStack getItem() {
-		return new ItemBuilder(Material.FIREWORK_CHARGE).name("BurstBomb").lore(ChatColor.GRAY + "").build();
+		return new ItemBuilder(Material.FIRE_CHARGE).name("BurstBomb").lore(ChatColor.GRAY + "").build();
 	}
 	
 }

@@ -46,15 +46,15 @@ public class WorldUtil {
 	 }
 	
 	public static World changeWorld(String source, String target){
-		World wtarget;
-		World wsource = Bukkit.createWorld(new WorldCreator(source));
-		
-		wtarget = Bukkit.createWorld(new WorldCreator(target));
-		copyWorld(wsource.getWorldFolder(), wtarget.getWorldFolder());
-		
+		World wsource = new WorldCreator(source).createWorld();
+		World wtarget = new WorldCreator(target).createWorld();
+
 		Bukkit.unloadWorld(wsource, false);
 		Bukkit.unloadWorld(wtarget, false);
-		wtarget = Bukkit.createWorld(new WorldCreator(target));
+
+		copyWorld(wsource.getWorldFolder(), wtarget.getWorldFolder());
+
+		wtarget = new WorldCreator(target).createWorld();
 		
 		return wtarget;
 	}
@@ -69,7 +69,9 @@ public class WorldUtil {
 		w.setThundering(false);
 		w.setWaterAnimalSpawnLimit(0);
 		w.setSpawnFlags(false, false);
-		
+		w.setMonsterSpawnLimit(0);
+		w.setAnimalSpawnLimit(0);
+
 		w.getEntities().clear();
 	}
 	
@@ -97,10 +99,10 @@ public class WorldUtil {
 			for(int y = Math.min(game.getGameMap().getFirstMapCorner().getBlockY(), game.getGameMap().getSecondMapCorner().getBlockY()); y < Math.max(game.getGameMap().getFirstMapCorner().getBlockY(), game.getGameMap().getSecondMapCorner().getBlockY()); y++){
 				for(int z = Math.min(game.getGameMap().getFirstMapCorner().getBlockZ(), game.getGameMap().getSecondMapCorner().getBlockZ()); z < Math.max(game.getGameMap().getFirstMapCorner().getBlockZ(), game.getGameMap().getSecondMapCorner().getBlockZ()); z++){
 					Block block = new Location(game.getGameMap().getFirstMapCorner().getWorld(), x, y, z).getBlock();
-					if(block.getType() == Material.LEGACY_STAINED_CLAY && block.getData() == c.getDyeColor().getDyeData())tiles++;
-					else if(block.getType() == Material.LEGACY_STAINED_GLASS && block.getData() == c.getDyeColor().getDyeData())tiles++;
+					if(block.getType() == c.getStainedClay())tiles++;
+					else if(block.getType() == c.getStainedGlass())tiles++;
 					else if(block.getType() == c.getBlockMaterial())tiles++;
-					else if(block.getType() == Material.LEGACY_WOOL && block.getData() == c.getDyeColor().getDyeData())tiles++;
+					else if(block.getType() == c.getWool())tiles++;
 				}
 			}
 		}

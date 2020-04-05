@@ -1,6 +1,7 @@
 name: Splatoon3
 version: 0.0.1
-main: src.Main
+api-version: 1.13
+main: Main
 
 commands:
   startgame:

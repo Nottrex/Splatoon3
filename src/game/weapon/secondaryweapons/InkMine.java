@@ -22,7 +22,7 @@ public class InkMine extends Weapon {
 
 	@Override
 	public ItemStack getItem() {
-		return new ItemBuilder(Material.CARPET).name("InkMine").lore(ChatColor.GRAY + "").build();
+		return new ItemBuilder(Material.WHITE_CARPET).name("InkMine").lore(ChatColor.GRAY + "").build();
 	}
 
 }

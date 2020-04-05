@@ -39,7 +39,7 @@ public class Item {
 	}
 	
 	public static ItemStack getTeamItem(TeamColor team, List<Player> players, int max_players) {
-		ItemBuilder ib = new ItemBuilder(new ItemStack(Material.WHITE_WOOL, 1, team.getDyeColor().getDyeData()));
+		ItemBuilder ib = new ItemBuilder(new ItemStack(team.getWool(), 1));
 		ib.name(team.getChatColor() + team.getName());
 		
 		ib.lore(ChatUtil.HIGHLIGHT_COLOR + "" + players.size() + " / " + max_players);

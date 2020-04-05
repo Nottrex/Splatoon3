@@ -34,14 +34,14 @@ public class Util {
 	
 	@SuppressWarnings("deprecation")
 	public static boolean setBlockTeam(Block block, TeamColor team) {
-		if(block.getType() == Material.LEGACY_STAINED_CLAY && block.getData() != team.getDyeColor().getDyeData()) {
-			block.getState().setRawData(team.getDyeColor().getDyeData());
+		if(block.getType() != team.getStainedClay() && isClayBlock(block)) {
+			block.setType(team.getStainedClay());
 			return true;
-		} else if(block.getType() == Material.LEGACY_STAINED_GLASS && block.getData() != team.getDyeColor().getDyeData()) {
-			block.getState().setRawData(team.getDyeColor().getDyeData());
+		} else if(block.getType() != team.getStainedGlass() && isGlassBlock(block)) {
+			block.setType(team.getStainedGlass());
 			return true;
-		} else if(block.getType() ==  Material.LEGACY_WOOL && block.getData() != team.getDyeColor().getDyeData()) {
-			block.getState().setRawData(team.getDyeColor().getDyeData());
+		} else if(block.getType() != team.getWool() && isWoolBlock(block)) {
+			block.setType(team.getWool());
 			return true;
 		} else if(block.getType() != team.getBlockMaterial() && isOreBlock(block)) {
 			block.setType(team.getBlockMaterial());
@@ -52,16 +52,38 @@ public class Util {
 	
 	@SuppressWarnings("deprecation")
 	public static boolean isBlockTeam(Block block, TeamColor team){
-		if(block.getType() == Material.LEGACY_STAINED_CLAY && block.getData() == team.getDyeColor().getDyeData())return true;
-		else if(block.getType() == Material.LEGACY_STAINED_GLASS && block.getData() == team.getDyeColor().getDyeData())return true;
+		if(block.getType() == team.getStainedClay())return true;
+		else if(block.getType() == team.getStainedGlass())return true;
 		else if(block.getType() == team.getBlockMaterial())return true;
-		else if(block.getType() ==  Material.LEGACY_WOOL && block.getData() == team.getDyeColor().getDyeData())return true;
+		else if(block.getType() == team.getWool())return true;
 		return false;
 	}
 	
 	public static boolean isOreBlock(Block b) {
 		for (TeamColor c: TeamColor.values()) {
 			if (c.getBlockMaterial() == b.getType()) return true;
+		}
+		return false;
+	}
+
+	public static boolean isGlassBlock(Block b) {
+		for (TeamColor c: TeamColor.values()) {
+			if (c.getStainedGlass() == b.getType()) return true;
+		}
+		return false;
+	}
+
+	public static boolean isClayBlock(Block b) {
+		for (TeamColor c: TeamColor.values()) {
+			if (c.getStainedClay() == b.getType()) return true;
+		}
+		return false;
+	}
+
+
+	public static boolean isWoolBlock(Block b) {
+		for (TeamColor c: TeamColor.values()) {
+			if (c.getWool() == b.getType()) return true;
 		}
 		return false;
 	}

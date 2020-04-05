@@ -39,6 +39,6 @@ public class ChatUtil {
 	}
 	
 	public static String formatChat(Player p, String message) {
-		return p.getDisplayName() + SYMBOL_COLOR + " � " + CHAT_COLOR + message;
+		return p.getDisplayName() + SYMBOL_COLOR + "> " + CHAT_COLOR + message;
 	}
 }

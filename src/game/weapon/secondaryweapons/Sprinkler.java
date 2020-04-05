@@ -22,7 +22,7 @@ public class Sprinkler extends Weapon {
 
 	@Override
 	public ItemStack getItem() {
-		return new ItemBuilder(Material.FENCE).name("Sprinkler").lore(ChatColor.GRAY + "").build();
+		return new ItemBuilder(Material.OAK_FENCE).name("Sprinkler").lore(ChatColor.GRAY + "").build();
 	}
 
 }

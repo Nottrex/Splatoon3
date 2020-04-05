@@ -56,16 +56,6 @@ public class PlayerUtil {
 	    PacketPlayOutPlayerListHeaderFooter headerPacket = new PacketPlayOutPlayerListHeaderFooter();
 	    headerPacket.header = tabTitle;	//TODO: ?
 	    headerPacket.footer = tabFoot;	//TODO: ?
-
-	    try
-	    {
-	      Field field = headerPacket.getClass().getDeclaredField("b");
-	      field.setAccessible(true);
-	      field.set(headerPacket, tabFoot);
-	    } catch (Exception e) {
-	      e.printStackTrace();
-	    } finally {
-	      connection.sendPacket(headerPacket);
-	    }
+		connection.sendPacket(headerPacket);
 	}
 }

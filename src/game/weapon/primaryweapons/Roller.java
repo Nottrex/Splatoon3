@@ -43,7 +43,7 @@ public class Roller extends Weapon {
 
 	@Override
 	public ItemStack getItem() {
-		return new ItemBuilder(Material.IRON_SPADE).name("Roller").lore(ChatColor.GRAY + "A slow powerfull Weapon").build();
+		return new ItemBuilder(Material.IRON_SHOVEL).name("Roller").lore(ChatColor.GRAY + "A slow powerfull Weapon").build();
 	}
 
 	
