@@ -1,9 +1,9 @@
 package game.util;
 
-import net.minecraft.server.v1_9_R1.ChatComponentText;
-import net.minecraft.server.v1_9_R1.PacketPlayOutTitle;
+import net.minecraft.server.v1_15_R1.ChatComponentText;
+import net.minecraft.server.v1_15_R1.PacketPlayOutTitle;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import static com.google.common.base.Preconditions.*;
@@ -73,7 +73,7 @@ public class TitleBuilder {
      * @param player The player to send the title to
      */
     public void send( Player player ) {
-        checkArgument( player instanceof CraftPlayer );
+        checkArgument( player instanceof CraftPlayer);
         checkState( title != null );
         checkState( times != null );
 

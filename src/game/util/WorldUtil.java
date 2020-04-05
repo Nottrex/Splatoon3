@@ -11,12 +11,7 @@ import java.util.Arrays;
 
 import game.Game;
 import game.TeamColor;
-import org.bukkit.Bukkit;
-import org.bukkit.Difficulty;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 
 public class WorldUtil {
@@ -84,10 +79,10 @@ public class WorldUtil {
 		for(int x = Math.min(game.getGameMap().getFirstMapCorner().getBlockX(), game.getGameMap().getSecondMapCorner().getBlockX()); x < Math.max(game.getGameMap().getFirstMapCorner().getBlockX(), game.getGameMap().getSecondMapCorner().getBlockX()); x++){
 			for(int y = Math.min(game.getGameMap().getFirstMapCorner().getBlockY(), game.getGameMap().getSecondMapCorner().getBlockY()); y < Math.max(game.getGameMap().getFirstMapCorner().getBlockY(), game.getGameMap().getSecondMapCorner().getBlockY()); y++){
 				for(int z = Math.min(game.getGameMap().getFirstMapCorner().getBlockZ(), game.getGameMap().getSecondMapCorner().getBlockZ()); z < Math.max(game.getGameMap().getFirstMapCorner().getBlockZ(), game.getGameMap().getSecondMapCorner().getBlockZ()); z++){
-					if(new Location(game.getGameMap().getFirstMapCorner().getWorld(), x, y, z).getBlock().getType() == Material.STAINED_CLAY)tiles++;
-					else if(new Location(game.getGameMap().getFirstMapCorner().getWorld(), x, y, z).getBlock().getType() == Material.STAINED_GLASS)tiles++;
+					if(new Location(game.getGameMap().getFirstMapCorner().getWorld(), x, y, z).getBlock().getType() == Material.LEGACY_STAINED_CLAY)tiles++;
+					else if(new Location(game.getGameMap().getFirstMapCorner().getWorld(), x, y, z).getBlock().getType() == Material.LEGACY_STAINED_GLASS)tiles++;
 					if(new Location(game.getGameMap().getFirstMapCorner().getWorld(), x, y, z).getBlock().getType() == Material.IRON_BLOCK)tiles++;
-					if(new Location(game.getGameMap().getFirstMapCorner().getWorld(), x, y, z).getBlock().getType() == Material.WOOL)tiles++;
+					if(new Location(game.getGameMap().getFirstMapCorner().getWorld(), x, y, z).getBlock().getType() == Material.LEGACY_WOOL)tiles++;
 				}
 			}
 		}
@@ -102,10 +97,10 @@ public class WorldUtil {
 			for(int y = Math.min(game.getGameMap().getFirstMapCorner().getBlockY(), game.getGameMap().getSecondMapCorner().getBlockY()); y < Math.max(game.getGameMap().getFirstMapCorner().getBlockY(), game.getGameMap().getSecondMapCorner().getBlockY()); y++){
 				for(int z = Math.min(game.getGameMap().getFirstMapCorner().getBlockZ(), game.getGameMap().getSecondMapCorner().getBlockZ()); z < Math.max(game.getGameMap().getFirstMapCorner().getBlockZ(), game.getGameMap().getSecondMapCorner().getBlockZ()); z++){
 					Block block = new Location(game.getGameMap().getFirstMapCorner().getWorld(), x, y, z).getBlock();
-					if(block.getType() == Material.STAINED_CLAY && block.getData() == c.getDyeColor().getData())tiles++;
-					else if(block.getType() == Material.STAINED_GLASS && block.getData() == c.getDyeColor().getData())tiles++;
+					if(block.getType() == Material.LEGACY_STAINED_CLAY && block.getData() == c.getDyeColor().getDyeData())tiles++;
+					else if(block.getType() == Material.LEGACY_STAINED_GLASS && block.getData() == c.getDyeColor().getDyeData())tiles++;
 					else if(block.getType() == c.getBlockMaterial())tiles++;
-					else if(block.getType() ==  Material.WOOL && block.getData() == c.getDyeColor().getData())tiles++;
+					else if(block.getType() == Material.LEGACY_WOOL && block.getData() == c.getDyeColor().getDyeData())tiles++;
 				}
 			}
 		}

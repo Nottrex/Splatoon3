@@ -2,16 +2,15 @@ package game.util;
 
 import java.lang.reflect.Field;
 
+import net.minecraft.server.v1_15_R1.IChatBaseComponent;
+import net.minecraft.server.v1_15_R1.PacketPlayOutPlayerListHeaderFooter;
+import net.minecraft.server.v1_15_R1.PlayerConnection;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
-import net.minecraft.server.v1_9_R1.IChatBaseComponent;
-import net.minecraft.server.v1_9_R1.IChatBaseComponent.ChatSerializer;
-import net.minecraft.server.v1_9_R1.PacketPlayOutPlayerListHeaderFooter;
-import net.minecraft.server.v1_9_R1.PlayerConnection;
 
 public class PlayerUtil {
 	public static void preparePlayer(Player p) {
@@ -52,9 +51,12 @@ public class PlayerUtil {
 	    footer = ChatColor.translateAlternateColorCodes('&', footer);
 	
 	    PlayerConnection connection = ((CraftPlayer)player).getHandle().playerConnection;
-	    IChatBaseComponent tabTitle = ChatSerializer.a("{\"text\": \"" + header + "\"}");
-	    IChatBaseComponent tabFoot = ChatSerializer.a("{\"text\": \"" + footer + "\"}");
-	    PacketPlayOutPlayerListHeaderFooter headerPacket = new PacketPlayOutPlayerListHeaderFooter(tabTitle);
+	    IChatBaseComponent tabTitle = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + header + "\"}");
+	    IChatBaseComponent tabFoot = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + footer + "\"}");
+	    PacketPlayOutPlayerListHeaderFooter headerPacket = new PacketPlayOutPlayerListHeaderFooter();
+	    headerPacket.header = tabTitle;	//TODO: ?
+	    headerPacket.footer = tabFoot;	//TODO: ?
+
 	    try
 	    {
 	      Field field = headerPacket.getClass().getDeclaredField("b");

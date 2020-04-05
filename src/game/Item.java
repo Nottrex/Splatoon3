@@ -19,7 +19,7 @@ public class Item {
 	}
 	
 	public static ItemStack getWeaponSelectionItemPrimary() {
-		return new ItemBuilder(Material.SULPHUR).name("Primary Weapon").build();
+		return new ItemBuilder(Material.GUNPOWDER).name("Primary Weapon").build();
 	}
 	
 	public static ItemStack getWeaponSelectionItemSecondary() {
@@ -35,12 +35,11 @@ public class Item {
 	}
 	
 	public static ItemStack getTeamSelectionItem() {
-		return new ItemBuilder(Material.BED).name("Team-Selector").lore(ChatColor.GRAY + "Select your Team").build();
+		return new ItemBuilder(Material.RED_BED).name("Team-Selector").lore(ChatColor.GRAY + "Select your Team").build();
 	}
 	
 	public static ItemStack getTeamItem(TeamColor team, List<Player> players, int max_players) {
-		@SuppressWarnings("deprecation")
-		ItemBuilder ib = new ItemBuilder(new ItemStack(Material.WOOL, 1, team.getDyeColor().getData()));
+		ItemBuilder ib = new ItemBuilder(new ItemStack(Material.WHITE_WOOL, 1, team.getDyeColor().getDyeData()));
 		ib.name(team.getChatColor() + team.getName());
 		
 		ib.lore(ChatUtil.HIGHLIGHT_COLOR + "" + players.size() + " / " + max_players);

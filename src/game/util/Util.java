@@ -11,6 +11,9 @@ import org.bukkit.block.Block;
 import org.bukkit.plugin.Plugin;
 
 public class Util {
+
+	//TODO:
+
 	public static Random RANDOM;
 	public static Logger LOGGER;
 	public static Game GAME;
@@ -31,14 +34,14 @@ public class Util {
 	
 	@SuppressWarnings("deprecation")
 	public static boolean setBlockTeam(Block block, TeamColor team) {
-		if(block.getType() == Material.STAINED_CLAY && block.getData() != team.getDyeColor().getData()) {
-			block.setData(team.getDyeColor().getData());
+		if(block.getType() == Material.LEGACY_STAINED_CLAY && block.getData() != team.getDyeColor().getDyeData()) {
+			block.getState().setRawData(team.getDyeColor().getDyeData());
 			return true;
-		} else if(block.getType() == Material.STAINED_GLASS && block.getData() != team.getDyeColor().getData()) {
-			block.setData(team.getDyeColor().getData());
+		} else if(block.getType() == Material.LEGACY_STAINED_GLASS && block.getData() != team.getDyeColor().getDyeData()) {
+			block.getState().setRawData(team.getDyeColor().getDyeData());
 			return true;
-		} else if(block.getType() ==  Material.WOOL && block.getData() != team.getDyeColor().getData()) {
-			block.setData(team.getDyeColor().getData());
+		} else if(block.getType() ==  Material.LEGACY_WOOL && block.getData() != team.getDyeColor().getDyeData()) {
+			block.getState().setRawData(team.getDyeColor().getDyeData());
 			return true;
 		} else if(block.getType() != team.getBlockMaterial() && isOreBlock(block)) {
 			block.setType(team.getBlockMaterial());
@@ -49,10 +52,10 @@ public class Util {
 	
 	@SuppressWarnings("deprecation")
 	public static boolean isBlockTeam(Block block, TeamColor team){
-		if(block.getType() == Material.STAINED_CLAY && block.getData() == team.getDyeColor().getData())return true;
-		else if(block.getType() == Material.STAINED_GLASS && block.getData() == team.getDyeColor().getData())return true;
+		if(block.getType() == Material.LEGACY_STAINED_CLAY && block.getData() == team.getDyeColor().getDyeData())return true;
+		else if(block.getType() == Material.LEGACY_STAINED_GLASS && block.getData() == team.getDyeColor().getDyeData())return true;
 		else if(block.getType() == team.getBlockMaterial())return true;
-		else if(block.getType() ==  Material.WOOL && block.getData() == team.getDyeColor().getData())return true;
+		else if(block.getType() ==  Material.LEGACY_WOOL && block.getData() == team.getDyeColor().getDyeData())return true;
 		return false;
 	}
 	
