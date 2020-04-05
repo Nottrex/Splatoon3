@@ -6,6 +6,7 @@ import game.PlayerHandler;
 import game.TeamColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,7 +41,7 @@ public class PlayerMoveListener implements Listener {
 			pl.getGamePlayer(p).setOnTeamColor(Util.isBlockTeam(p.getLocation().subtract(0, 1, 0).getBlock(), c));
 									
 			if (pl.getGamePlayer(p).isSneaking() && pl.getGamePlayer(p).isOnTeamColor()) {
-				p.getWorld().playEffect(p.getLocation(), Effect.STEP_SOUND, new MaterialData(c.getWool()));
+				p.getWorld().spawnParticle(Particle.BLOCK_CRACK, p.getLocation(), 1, p.getLocation().subtract(0, 1, 0).getBlock().getBlockData());
 			}
 			
 			if(event.getPlayer().getLocation().getBlock().getType() == Material.WATER){

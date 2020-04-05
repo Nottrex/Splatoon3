@@ -122,9 +122,13 @@ public class Main extends JavaPlugin implements Listener {
  				return true;
  			}
  			
- 			if(args.length >= 2 && args[0].toString().equalsIgnoreCase("give")){
- 				try{p.getInventory().addItem(Item.items.get(args[1].toLowerCase()));}catch(Exception e){}
- 			} else if(args[0].toString().equalsIgnoreCase("where")){
+ 			if(args.length >= 2 && args[0].equalsIgnoreCase("give")){
+ 				try{
+ 					p.getInventory().addItem(Item.items.get(args[1].toLowerCase()));
+ 				} catch(Exception e) {
+					ChatUtil.sendErrorMessage(sender, String.format("Something went wrong while giving you this item - %s", e.getMessage()));
+				}
+ 			} else if(args[0].equalsIgnoreCase("where")){
  				ChatUtil.sendMessage(p, "You are here: " + ChatUtil.HIGHLIGHT_COLOR + p.getLocation().getWorld().getName());
  			}
  			
