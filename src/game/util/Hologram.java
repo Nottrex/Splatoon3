@@ -1,14 +1,13 @@
 package game.util;
 
 import java.util.List;
-import net.minecraft.server.v1_9_R1.EntityArmorStand;
-import net.minecraft.server.v1_9_R1.Packet;
-import net.minecraft.server.v1_9_R1.PacketPlayOutSpawnEntityLiving;
+
+import net.minecraft.server.v1_15_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 /**
@@ -57,9 +56,9 @@ public class Hologram {
     public Packet<?> getPacket( World w, double x, double y, double z, String text ) {
 
         EntityArmorStand armorStand = new EntityArmorStand( ( ( CraftWorld ) w ).getHandle(), x, y, z );
-        armorStand.setCustomName( text );
+        armorStand.setCustomName(new ChatMessage(text));
         armorStand.setCustomNameVisible( true );
-        armorStand.setGravity( false );
+        armorStand.setNoGravity( true );
         armorStand.setLocation( x, y, z, 0.0F, 0.0F );
         armorStand.setInvisible( true );
 

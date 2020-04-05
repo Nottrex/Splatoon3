@@ -9,7 +9,6 @@ import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerAchievementAwardedEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -43,11 +42,6 @@ public class CancelledListener implements Listener{
 	
 	@EventHandler
 	public void onPlayerFoodLevelChange(FoodLevelChangeEvent event) {
-		if (game.getGameState() != GameState.UNSTARTET) event.setCancelled(true);
-	}
-	
-	@EventHandler
-	public void onPlayerAchievementAwarded(PlayerAchievementAwardedEvent event) {
 		if (game.getGameState() != GameState.UNSTARTET) event.setCancelled(true);
 	}
 	

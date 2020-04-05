@@ -35,11 +35,12 @@ public class InventoryClickListener implements Listener {
 		
 		ItemStack item = event.getCurrentItem();
 		Inventory inv = event.getInventory();
+
 		Player p = (Player) event.getWhoClicked();
 		
-		if (inv != null && item != null && item.getItemMeta() != null) {
+		if (item != null && item.getItemMeta() != null) {
 			
-			if (inv.getName().equals("TeamSelection")) {
+			if (event.getView().getTitle().equals("TeamSelection")) {
 				for (TeamColor c: TeamColor.values()) {
 					if (item.getItemMeta().getDisplayName().equals(c.getChatColor() + c.getName())) {
 						if (game.getPlayerHandler().setTeam(p, c)) {
@@ -48,7 +49,7 @@ public class InventoryClickListener implements Listener {
 						}
 					}
 				}
-			} else if (inv.getName().equals("WeaponSelection")) {
+			} else if (event.getView().getTitle().equals("WeaponSelection")) {
 				if (item.equals(Item.getWeaponSelectionItemPrimary())) {
 					event.getWhoClicked().openInventory(Inventories.getWeaponSelectionInventoryPrimary(game.getPlayerHandler().getGamePlayer(p)));
 				} else if (item.equals(Item.getWeaponSelectionItemSecondary())) {
@@ -56,7 +57,7 @@ public class InventoryClickListener implements Listener {
 				} else if (item.equals(Item.getWeaponSelectionItemSpecial())) {
 					event.getWhoClicked().openInventory(Inventories.getWeaponSelectionInventorySpecial(game.getPlayerHandler().getGamePlayer(p)));
 				}
-			} else if (inv.getName().equals("PrimaryWeaponSelection")) {
+			} else if (event.getView().getTitle().equals("PrimaryWeaponSelection")) {
 				for (Weapon w: Weapon.getPrimaryWeapons()) {
 					if (w.getItem().equals(item)) {
 						p.closeInventory();
@@ -64,7 +65,7 @@ public class InventoryClickListener implements Listener {
 						ChatUtil.sendMessage(p, "You equiped " + ChatUtil.HIGHLIGHT_COLOR + w.getName() + ChatUtil.COMMAND_COLOR + " as your primary weapon");
 					}
 				}
-			} else if (inv.getName().equals("SecondaryWeaponSelection")) {
+			} else if (event.getView().getTitle().equals("SecondaryWeaponSelection")) {
 				for (Weapon w: Weapon.getSecondaryWeapons()) {
 					if (w.getItem().equals(item)) {
 						p.closeInventory();
@@ -72,7 +73,7 @@ public class InventoryClickListener implements Listener {
 						ChatUtil.sendMessage(p, "You equiped " + ChatUtil.HIGHLIGHT_COLOR + w.getName() + ChatUtil.COMMAND_COLOR + " as your secondary weapon");
 					}
 				}
-			} else if (inv.getName().equals("SpecialWeaponSelection")) {
+			} else if (event.getView().getTitle().equals("SpecialWeaponSelection")) {
 				for (Weapon w: Weapon.getSpecialWeapons()) {
 					if (w.getItem().equals(item)) {
 						p.closeInventory();
@@ -113,6 +114,6 @@ public class InventoryClickListener implements Listener {
 	
 	private static final int[] pos = new int[] {16, 16, 34, 34, 24, 26, 24, 26, 17, 35};
 	
-	private static ItemStack A = new ItemBuilder(Material.SIGN).name("A").build();
-	private static ItemStack B = new ItemBuilder(Material.SIGN).name("B").build();
+	private static ItemStack A = new ItemBuilder(Material.OAK_SIGN).name("A").build();
+	private static ItemStack B = new ItemBuilder(Material.OAK_SIGN).name("B").build();
 }

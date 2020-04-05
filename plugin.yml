@@ -1,3 +1,14 @@
 name: Splatoon3
 version: 0.0.1
 main: src.Main
+
+commands:
+  startgame:
+    description: Starts the game
+    usage: /startgame
+  stopgame:
+    description: Stops the game
+    usage: /stopgame
+  splatoon:
+    description: OP and Dev Commands
+    usage: /splatoon <command> <data>

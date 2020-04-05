@@ -40,10 +40,10 @@ public class PlayerMoveListener implements Listener {
 			pl.getGamePlayer(p).setOnTeamColor(Util.isBlockTeam(p.getLocation().subtract(0, 1, 0).getBlock(), c));
 									
 			if (pl.getGamePlayer(p).isSneaking() && pl.getGamePlayer(p).isOnTeamColor()) {
-				p.getWorld().playEffect(p.getLocation(), Effect.TILE_BREAK, new MaterialData(Material.WOOL, pl.getTeam(p).getDyeColor().getData()));
+				p.getWorld().playEffect(p.getLocation(), Effect.STEP_SOUND, new MaterialData(Material.WHITE_WOOL, pl.getTeam(p).getDyeColor().getDyeData()));
 			}
 			
-			if(event.getPlayer().getLocation().getBlock().getType() == Material.WATER || event.getPlayer().getLocation().getBlock().getType() == Material.STATIONARY_WATER){
+			if(event.getPlayer().getLocation().getBlock().getType() == Material.WATER){
 				event.getPlayer().setHealth(0);
 			}
 		}

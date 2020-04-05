@@ -11,14 +11,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.nonamelabs.splatoon.game.Game;
-import de.nonamelabs.splatoon.game.GameState;
-import de.nonamelabs.splatoon.game.Item;
-import de.nonamelabs.splatoon.game.ScoreBoard;
-import de.nonamelabs.splatoon.game.events.GameFinishEvent;
-import de.nonamelabs.splatoon.util.ChatUtil;
-import de.nonamelabs.splatoon.util.TimeUtil;
-import de.nonamelabs.splatoon.util.Util;
+import game.Game;
+import game.GameState;
+import game.Item;
+import game.ScoreBoard;
+import game.events.GameFinishEvent;
+import game.util.ChatUtil;
+import game.util.TimeUtil;
+import game.util.Util;
 
 public class Main extends JavaPlugin implements Listener {
 	public static Main INSTANCE;
