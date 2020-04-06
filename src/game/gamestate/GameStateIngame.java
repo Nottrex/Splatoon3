@@ -4,23 +4,35 @@ import game.GamePlayer;
 import game.GameState;
 import game.PlayerHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.plugin.Plugin;
 
 import game.Game;
 import game.util.ChatUtil;
 import game.util.PlayerUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameStateIngame extends GameStateBase {
 
 	private int taskId;
+	private int task_Trail;
 	private int task_Ink;
 	private PlayerHandler ph;
+
+	private List<Projectile> projectiles;
+
 	private int time = 301;
 	public GameStateIngame(Game game, Plugin plugin) {
 		super(game, plugin, GameState.INGAME);
 		this.ph = game.getPlayerHandler();
-		
+
+		projectiles = new ArrayList<>();
+
 		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			
 			@Override
@@ -39,7 +51,15 @@ public class GameStateIngame extends GameStateBase {
 				game.getScoreboard().update();
 			}
 		}, 0L, 20L);
-		
+
+		task_Trail = taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+
+			@Override
+			public void run() {
+				projectiles.forEach(p -> p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation(), 0, 0.001, 1, 0, 1, new Particle.DustOptions(ph.getTeam((Player) p.getShooter()).getColor(), 1)));
+			}
+		}, 0L, 2L);
+
 		task_Ink = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			
 			int i = 0;
@@ -66,6 +86,7 @@ public class GameStateIngame extends GameStateBase {
 	public void stop() {
 		Bukkit.getScheduler().cancelTask(taskId);
 		Bukkit.getScheduler().cancelTask(task_Ink);
+		Bukkit.getScheduler().cancelTask(task_Trail);
 	}
 
 	@Override
@@ -88,7 +109,16 @@ public class GameStateIngame extends GameStateBase {
 		PlayerUtil.prepareSpectator(p);
 		p.teleport(game.getGameMap().getCenter());
 	}
-	
+
+	public void addProjectile(Projectile p) {
+		projectiles.add(p);
+	}
+
+	public void removeProjectile(Projectile p) {
+		projectiles.remove(p);
+	}
+
+
 	public String getTime() {
 		String seconds = String.valueOf(time % 60);
 		while (seconds.length() < 2) {

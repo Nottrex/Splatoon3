@@ -63,6 +63,8 @@ public class WorldUtil {
 		w.setTime(12000);
 		w.setDifficulty(Difficulty.EASY);
 		w.setGameRuleValue("doDaylightCycle", "false");
+		w.setGameRuleValue("keepInventory", "true");
+		w.setGameRuleValue("doMobSpawning", "false");
 		w.setMonsterSpawnLimit(0);
 		w.setWeatherDuration(999999);
 		w.setStorm(false);
@@ -72,7 +74,7 @@ public class WorldUtil {
 		w.setMonsterSpawnLimit(0);
 		w.setAnimalSpawnLimit(0);
 
-		w.getEntities().clear();
+		w.getEntities().forEach(e -> e.remove());
 	}
 	
 	public static int countTile(Game game){
@@ -99,10 +101,8 @@ public class WorldUtil {
 			for(int y = Math.min(game.getGameMap().getFirstMapCorner().getBlockY(), game.getGameMap().getSecondMapCorner().getBlockY()); y < Math.max(game.getGameMap().getFirstMapCorner().getBlockY(), game.getGameMap().getSecondMapCorner().getBlockY()); y++){
 				for(int z = Math.min(game.getGameMap().getFirstMapCorner().getBlockZ(), game.getGameMap().getSecondMapCorner().getBlockZ()); z < Math.max(game.getGameMap().getFirstMapCorner().getBlockZ(), game.getGameMap().getSecondMapCorner().getBlockZ()); z++){
 					Block block = new Location(game.getGameMap().getFirstMapCorner().getWorld(), x, y, z).getBlock();
-					if(block.getType() == c.getStainedClay())tiles++;
-					else if(block.getType() == c.getStainedGlass())tiles++;
-					else if(block.getType() == c.getBlockMaterial())tiles++;
-					else if(block.getType() == c.getWool())tiles++;
+
+					if(c.isBlockTeam(block)) tiles++;
 				}
 			}
 		}

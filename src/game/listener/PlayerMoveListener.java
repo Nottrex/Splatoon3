@@ -38,7 +38,7 @@ public class PlayerMoveListener implements Listener {
 		if(game.getGameState() == GameState.INGAME && pl.isPlayer(event.getPlayer())){
 			TeamColor c = pl.getTeam(p);
 			
-			pl.getGamePlayer(p).setOnTeamColor(Util.isBlockTeam(p.getLocation().subtract(0, 1, 0).getBlock(), c));
+			pl.getGamePlayer(p).setOnTeamColor(c.isBlockTeam(p.getLocation().subtract(0, 1, 0).getBlock()));
 									
 			if (pl.getGamePlayer(p).isSneaking() && pl.getGamePlayer(p).isOnTeamColor()) {
 				p.getWorld().spawnParticle(Particle.BLOCK_CRACK, p.getLocation(), 1, p.getLocation().subtract(0, 1, 0).getBlock().getBlockData());

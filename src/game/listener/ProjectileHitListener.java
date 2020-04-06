@@ -3,7 +3,9 @@ package game.listener;
 import game.Game;
 import game.GameState;
 import game.TeamColor;
+import game.gamestate.GameStateIngame;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -31,6 +33,8 @@ public class ProjectileHitListener implements Listener {
 		if (event.getEntity() instanceof Projectile) {
 			Projectile projectile = (Projectile) event.getEntity();
 			String name = projectile.getCustomName();
+
+			((GameStateIngame) game.getState()).removeProjectile(projectile);
 			
 			if (projectile.getShooter() instanceof Player && name.split(" ").length == 3) {
 				
@@ -41,7 +45,11 @@ public class ProjectileHitListener implements Listener {
 
 				int damage = Integer.valueOf(parts[1]);
 				int area = Integer.valueOf(parts[2]);
-				
+
+				if(projectile instanceof Egg) {
+					projectile.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, projectile.getLocation(), 1);
+				}
+
 				if (projectile instanceof Snowball || projectile instanceof Egg) {
 					for (int x = l.getBlockX() - area; x <= l.getBlockX() + area; x++) {
 						for (int y = l.getBlockY() - area; y <= l.getBlockY() + area; y++) {

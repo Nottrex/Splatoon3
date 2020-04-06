@@ -158,7 +158,7 @@ public class GamePlayer {
 		
 		Block look = player.getTargetBlock(transparent, 3);
 		
-		if (isSneaking() && (player.hasPotionEffect(PotionEffectType.LEVITATION) || look.getY() >= player.getLocation().getBlockY()) && Util.isBlockTeam(look, c) && (Util.isBlockTeam(player.getLocation().subtract(1, 0, 0).getBlock(), c) || Util.isBlockTeam(player.getLocation().subtract(-1, 0, 0).getBlock(), c) || Util.isBlockTeam(player.getLocation().subtract(0, 0, 1).getBlock(), c) || Util.isBlockTeam(player.getLocation().subtract(0, 0, -1).getBlock(), c))) {
+		if (isSneaking() && (player.hasPotionEffect(PotionEffectType.LEVITATION) || look.getY() >= player.getLocation().getBlockY()) && c.isBlockTeam(look) && (c.isBlockTeam(player.getLocation().subtract(1, 0, 0).getBlock()) || c.isBlockTeam(player.getLocation().subtract(-1, 0, 0).getBlock()) || c.isBlockTeam(player.getLocation().subtract(0, 0, 1).getBlock()) || c.isBlockTeam(player.getLocation().subtract(0, 0, -1).getBlock()))) {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 999999, 9, false, false), true);
 		} else if (player.hasPotionEffect(PotionEffectType.LEVITATION)) {
 			player.removePotionEffect(PotionEffectType.LEVITATION);
