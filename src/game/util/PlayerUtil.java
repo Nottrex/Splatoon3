@@ -22,6 +22,7 @@ public class PlayerUtil {
 		p.setFireTicks(0);
 		p.setExp(0);
 		p.setLevel(0);
+		p.setWalkSpeed(0.2f);
 
 		if(Util.GAME.getGameState() == GameState.INGAME) p.getInventory().setChestplate(new ItemBuilder(Material.LEATHER_CHESTPLATE).color(Util.GAME.getPlayerHandler().getTeam(p).getColor()).build());
 

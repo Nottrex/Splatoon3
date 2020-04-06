@@ -72,7 +72,7 @@ public class Game implements Listener {
 	
 	public void setGameState(GameState gamestate) {		
 		if (this.gamestate == gamestate) return; 
-		state.stop();
+		if (state != null) state.stop();
 
 		this.gamestate = gamestate;
 		
@@ -104,7 +104,9 @@ public class Game implements Listener {
 		}
 	}
 	
-	public void start() {		
+	public void start() {
+		if (gamestate != GameState.UNSTARTET) return;
+
 		selectRandomMaps();
 		
 		playerHandler = new PlayerHandler(this, getTeamCount(), getTeamSize());
@@ -119,13 +121,14 @@ public class Game implements Listener {
 	}
 
 	public void start(String mapName) {
+		if (gamestate != GameState.UNSTARTET) return;
+
 		setGameMap(mapName);
 
 		playerHandler = new PlayerHandler(this, getTeamCount(), getTeamSize());
 		scoreboard = new ScoreBoard(this);
 
-		gamestate = GameState.LOBBY;
-		state = new GameStateLobby(this, plugin);
+		setGameState(GameState.LOBBY);
 
 		for (Player p: Bukkit.getOnlinePlayers()) {
 			playerHandler.addPlayer(p);

@@ -19,6 +19,8 @@ public class PlayerRespawnListener implements Listener{
 	
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event){
+		if (game.getGameState() == GameState.UNSTARTET) return;
+
 		Player p = event.getPlayer();
 		if (game.getPlayerHandler().isPlayer(p)) {
 			game.getState().preparePlayer(p, GameStateBase.PrepareType.DEATH);

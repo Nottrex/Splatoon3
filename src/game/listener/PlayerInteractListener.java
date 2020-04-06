@@ -42,8 +42,6 @@ public class PlayerInteractListener implements Listener {
 			}
 		}
 		
-		Util.LOGGER.log(Level.WARNING, event.getAction().name() + " " + (item == null));
-		
 		if (item != null && game.getGameState() == GameState.INGAME && game.getPlayerHandler().isPlayer(p)) {
 			for (Weapon w: Weapon.getPrimaryWeapons()) {
 				if (w.getItem().equals(item)) {

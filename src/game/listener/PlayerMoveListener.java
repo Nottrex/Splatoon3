@@ -1,9 +1,6 @@
 package game.listener;
 
-import game.Game;
-import game.GameState;
-import game.PlayerHandler;
-import game.TeamColor;
+import game.*;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -37,13 +34,14 @@ public class PlayerMoveListener implements Listener {
 		
 		if(game.getGameState() == GameState.INGAME && pl.isPlayer(event.getPlayer())){
 			TeamColor c = pl.getTeam(p);
-			
-			pl.getGamePlayer(p).setOnTeamColor(c.isBlockTeam(p.getLocation().subtract(0, 1, 0).getBlock()));
-									
-			if (pl.getGamePlayer(p).isSneaking() && pl.getGamePlayer(p).isOnTeamColor()) {
-				p.getWorld().spawnParticle(Particle.BLOCK_CRACK, p.getLocation(), 1, p.getLocation().subtract(0, 1, 0).getBlock().getBlockData());
-			}
-			
+			GamePlayer player = pl.getGamePlayer(p);
+
+			player.setNearTeamColor(c.isBlockTeam(p.getLocation().subtract(0, 1, 0).getBlock()) || c.isBlockTeam(p.getLocation().subtract(1, 0, 0).getBlock()) || c.isBlockTeam(p.getLocation().subtract(-1, 0, 0).getBlock()) || c.isBlockTeam(p.getLocation().subtract(0, 0, 1).getBlock()) || c.isBlockTeam(p.getLocation().subtract(0, 0, -1).getBlock()));
+			player.setOnGround(p.isOnGround());
+
+			float pitch = p.getEyeLocation().getPitch();
+			player.setLookUp(pitch < 0 ? pitch / -90 : 0);
+
 			if(event.getPlayer().getLocation().getBlock().getType() == Material.WATER){
 				event.getPlayer().setHealth(0);
 			}

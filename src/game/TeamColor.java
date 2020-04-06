@@ -21,7 +21,7 @@ public enum TeamColor {
 	private Color color;
 	private Material[] materials;	//block, wool, glass, clay, concrete, concretePowder, stairs, slab
 	
-	private TeamColor(String name, ChatColor chatColor, Color color, Material[] materials) {
+	TeamColor(String name, ChatColor chatColor, Color color, Material[] materials) {
 		this.name = name;
 		this.chatColor = chatColor;
 		this.color = color;

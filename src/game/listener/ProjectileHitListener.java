@@ -68,7 +68,7 @@ public class ProjectileHitListener implements Listener {
 					if (e instanceof Player) {
 						Player p2 = (Player) e;
 						if (game.getPlayerHandler().isPlayer(p2) && game.getPlayerHandler().getTeam(p2) != game.getPlayerHandler().getTeam(p)) {
-							p2.damage(damage, p);
+							p2.damage(damage * Math.max(0, area - e.getLocation().distance(p2.getLocation())) / area, p);
 						}
 					}
 				}

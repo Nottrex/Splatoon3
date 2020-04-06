@@ -28,18 +28,31 @@ public class GamePlayer {
 	private long last_primary, last_secondary;
 	private Weapon weapon_primary, weapon_secondary, weapon_special;
 	private int ink;
+
 	private boolean sneaking;
-	private boolean onTeamColor;
+	private boolean nearTeamColor;
+	private boolean onGround;
+	private float lookUp;
+	private boolean invisible;
+	private boolean levitating;
+
 	private int score;
 	private int special_score;
 	private Player player;
 	private Game game;
-	
+	private int lastSlot;
+
 	public GamePlayer(Player player, Game game) {
 		this.player = player;
 		this.game = game;
+
 		sneaking = false;
-		onTeamColor = false;
+		nearTeamColor = false;
+		onGround = true;
+		lookUp = 0;
+		invisible = false;
+		levitating = false;
+
 		ink = INK_MAX;
 		score = 0;
 		special_score = 0;
@@ -53,6 +66,7 @@ public class GamePlayer {
 	
 	public void action(WeaponType w, Action a) {
 		if (sneaking) return;
+
 		switch (w) {
 		case PRIMARY:
 			if (weapon_primary.getInk(a) <= ink && (TimeUtil.getTime() - last_primary) >= weapon_primary.getTime(a)) {
@@ -71,7 +85,7 @@ public class GamePlayer {
 			}
 			break;
 		case SPECIAL:
-			if (special_score >= SPECIAL_SCORE) {
+			if (canUseSpecialWeapon()) {
 				resetSpecialScore();
 				weapon_special.action(player, a);
 			}
@@ -132,57 +146,85 @@ public class GamePlayer {
 		if (sneaking == this.sneaking) return;
 				
 		if (sneaking) {
+			lastSlot = player.getInventory().getHeldItemSlot();
 			player.getInventory().setHeldItemSlot(6);
 		} else {
-			player.getInventory().setHeldItemSlot(0);
+			if (0 <= lastSlot && lastSlot <= 3)
+				player.getInventory().setHeldItemSlot(lastSlot);
+			else
+				player.getInventory().setHeldItemSlot(0);
 		}
 		
 		this.sneaking = sneaking;
 
-		updateLeaping();
 		updateEffects();
 	}
 	
-	public void setOnTeamColor(boolean onTeamColor) {
-		updateLeaping();
-		
-		if (onTeamColor == this.onTeamColor) return;
-		
-		this.onTeamColor = onTeamColor;
-		
+	public void setNearTeamColor(boolean nearTeamColor) {
+		this.nearTeamColor = nearTeamColor;
+
 		updateEffects();
-	}
-	
-	private void updateLeaping() {
-		TeamColor c = game.getPlayerHandler().getTeam(player);
-		
-		Block look = player.getTargetBlock(transparent, 3);
-		
-		if (isSneaking() && (player.hasPotionEffect(PotionEffectType.LEVITATION) || look.getY() >= player.getLocation().getBlockY()) && c.isBlockTeam(look) && (c.isBlockTeam(player.getLocation().subtract(1, 0, 0).getBlock()) || c.isBlockTeam(player.getLocation().subtract(-1, 0, 0).getBlock()) || c.isBlockTeam(player.getLocation().subtract(0, 0, 1).getBlock()) || c.isBlockTeam(player.getLocation().subtract(0, 0, -1).getBlock()))) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 999999, 9, false, false), true);
-		} else if (player.hasPotionEffect(PotionEffectType.LEVITATION)) {
-			player.removePotionEffect(PotionEffectType.LEVITATION);
-		}
 	}
 	
 	private void updateEffects() {
-		if (sneaking && onTeamColor) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 999999, 1, false, false));
-			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999, 39, false, false));
-			player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 999999, 2, false, false));
-			player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 999999, 0, false, false));
+		if ((sneaking && nearTeamColor)) {
+			if (!invisible) {
+				player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 999999, 1, false, false));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999, 39, false, false));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 999999, 2, false, false));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 999999, 0, false, false));
+				player.setGliding(true);
+				invisible = true;
+			}
+			player.setGliding(false);
+		} else if ((!onGround && invisible && sneaking)) {
+			if (!invisible) {
+				player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 999999, 1, false, false));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999, 39, false, false));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 999999, 2, false, false));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 999999, 0, false, false));
+				invisible = true;
+			}
 		} else {
-			player.removePotionEffect(PotionEffectType.INVISIBILITY);
-			player.removePotionEffect(PotionEffectType.SPEED);
-			player.removePotionEffect(PotionEffectType.REGENERATION);
-			player.removePotionEffect(PotionEffectType.JUMP);
+			if (invisible) {
+				player.removePotionEffect(PotionEffectType.INVISIBILITY);
+				player.removePotionEffect(PotionEffectType.SPEED);
+				player.removePotionEffect(PotionEffectType.REGENERATION);
+				player.removePotionEffect(PotionEffectType.JUMP);
+				invisible = false;
+			}
+			player.setGliding(false);
 		}
+
+		TeamColor c = game.getPlayerHandler().getTeam(player);
+
+		if (invisible && lookUp > 0 && (c.isBlockTeam(player.getLocation().subtract(1, 0, 0).getBlock()) || c.isBlockTeam(player.getLocation().subtract(-1, 0, 0).getBlock()) || c.isBlockTeam(player.getLocation().subtract(0, 0, 1).getBlock()) || c.isBlockTeam(player.getLocation().subtract(0, 0, -1).getBlock()))) {
+			player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 999999, (int) Math.ceil(9 * lookUp), false, false));
+			levitating = true;
+		} else {
+			levitating = false;
+			player.removePotionEffect(PotionEffectType.LEVITATION);
+		}
+
 	}
-	
-	public boolean isOnTeamColor() {
-		return onTeamColor;
+
+	public void setLookUp(float lookUp) {
+		this.lookUp = lookUp;
+		updateEffects();
 	}
-	
+
+	public boolean isNearTeamColor() {
+		return nearTeamColor;
+	}
+
+	public boolean isOnGround() {
+		return onGround;
+	}
+
+	public void setOnGround(boolean onGround) {
+		this.onGround = onGround;
+	}
+
 	public Weapon getPrimaryWeapon() {
 		return weapon_primary;
 	}
@@ -205,5 +247,9 @@ public class GamePlayer {
 	
 	public void setSpecialWeapon(Weapon weapon_special) {
 		this.weapon_special = weapon_special;
+	}
+
+	public boolean isInvisible() {
+		return invisible;
 	}
 }

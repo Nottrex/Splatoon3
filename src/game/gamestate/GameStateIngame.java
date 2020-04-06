@@ -68,7 +68,7 @@ public class GameStateIngame extends GameStateBase {
 				i++;
 				for (Player p: ph.getPlayers()) {
 					GamePlayer gp = ph.getGamePlayer(p);
-					if (gp.isSneaking() && gp.isOnTeamColor()) {
+					if (gp.isSneaking() && gp.isInvisible()) {
 						gp.addInk(5);
 					} else if (i % 4 == 0){
 						gp.addInk(1);
