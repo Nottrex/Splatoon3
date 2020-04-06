@@ -9,17 +9,17 @@ import org.bukkit.block.Block;
 import java.util.Arrays;
 
 public enum TeamColor {
-	WHITE("White", ChatColor.WHITE, Color.WHITE, new Material[]{Material.IRON_BLOCK, Material.WHITE_WOOL, Material.WHITE_STAINED_GLASS, Material.WHITE_TERRACOTTA, Material.WHITE_CONCRETE, Material.WHITE_CONCRETE_POWDER}),
-	BLACK("Black", ChatColor.BLACK, Color.BLACK, new Material[]{Material.COAL_BLOCK,  Material.BLACK_WOOL, Material.BLACK_STAINED_GLASS, Material.BLACK_TERRACOTTA, Material.BLACK_CONCRETE, Material.BLACK_CONCRETE_POWDER}),
-	BLUE("Blue",  ChatColor.BLUE, Color.BLUE, new Material[]{Material.LAPIS_BLOCK, Material.BLUE_WOOL, Material.BLUE_STAINED_GLASS, Material.BLUE_TERRACOTTA, Material.BLUE_CONCRETE, Material.BLUE_CONCRETE_POWDER}),
-	YELLOW("Yellow", ChatColor.YELLOW, Color.YELLOW, new Material[]{Material.GOLD_BLOCK, Material.YELLOW_WOOL, Material.YELLOW_STAINED_GLASS, Material.YELLOW_TERRACOTTA, Material.YELLOW_CONCRETE, Material.YELLOW_CONCRETE_POWDER}),
-	RED("Red", ChatColor.RED, Color.RED, new Material[]{Material.REDSTONE_BLOCK, Material.RED_WOOL, Material.RED_STAINED_GLASS, Material.RED_TERRACOTTA, Material.RED_CONCRETE, Material.RED_CONCRETE_POWDER}),
-	GREEN("Green", ChatColor.GREEN, Color.GREEN, new Material[]{Material.EMERALD_BLOCK, Material.GREEN_WOOL, Material.GREEN_STAINED_GLASS, Material.GREEN_TERRACOTTA, Material.GREEN_CONCRETE, Material.GREEN_CONCRETE_POWDER});
+	WHITE("White", ChatColor.WHITE, Color.WHITE, new Material[]{Material.IRON_BLOCK, Material.WHITE_WOOL, Material.WHITE_STAINED_GLASS, Material.WHITE_TERRACOTTA, Material.WHITE_CONCRETE, Material.WHITE_CONCRETE_POWDER, Material.SMOOTH_QUARTZ_STAIRS, Material.SMOOTH_QUARTZ_SLAB}),
+	BLACK("Black", ChatColor.BLACK, Color.BLACK, new Material[]{Material.COAL_BLOCK,  Material.BLACK_WOOL, Material.BLACK_STAINED_GLASS, Material.BLACK_TERRACOTTA, Material.BLACK_CONCRETE, Material.BLACK_CONCRETE_POWDER, Material.NETHER_BRICK_STAIRS, Material.NETHER_BRICK_SLAB}),
+	BLUE("Blue",  ChatColor.BLUE, Color.BLUE, new Material[]{Material.LAPIS_BLOCK, Material.BLUE_WOOL, Material.BLUE_STAINED_GLASS, Material.BLUE_TERRACOTTA, Material.BLUE_CONCRETE, Material.BLUE_CONCRETE_POWDER, Material.DARK_PRISMARINE_STAIRS, Material.DARK_PRISMARINE_SLAB}),
+	YELLOW("Yellow", ChatColor.YELLOW, Color.YELLOW, new Material[]{Material.GOLD_BLOCK, Material.YELLOW_WOOL, Material.YELLOW_STAINED_GLASS, Material.YELLOW_TERRACOTTA, Material.YELLOW_CONCRETE, Material.YELLOW_CONCRETE_POWDER, Material.SMOOTH_SANDSTONE_STAIRS, Material.SMOOTH_RED_SANDSTONE_SLAB}),
+	RED("Red", ChatColor.RED, Color.RED, new Material[]{Material.REDSTONE_BLOCK, Material.RED_WOOL, Material.RED_STAINED_GLASS, Material.RED_TERRACOTTA, Material.RED_CONCRETE, Material.RED_CONCRETE_POWDER, Material.SMOOTH_RED_SANDSTONE_STAIRS, Material.SMOOTH_RED_SANDSTONE_SLAB}),
+	GREEN("Green", ChatColor.GREEN, Color.GREEN, new Material[]{Material.EMERALD_BLOCK, Material.GREEN_WOOL, Material.GREEN_STAINED_GLASS, Material.GREEN_TERRACOTTA, Material.GREEN_CONCRETE, Material.GREEN_CONCRETE_POWDER, Material.MOSSY_STONE_BRICK_STAIRS, Material.MOSSY_STONE_BRICK_SLAB});
 
 	private String name;
 	private ChatColor chatColor;
 	private Color color;
-	private Material[] materials;	//block, wool, glass, clay, concrete, concretePowder
+	private Material[] materials;	//block, wool, glass, clay, concrete, concretePowder, stairs, slab
 	
 	private TeamColor(String name, ChatColor chatColor, Color color, Material[] materials) {
 		this.name = name;

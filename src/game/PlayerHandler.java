@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -188,12 +189,8 @@ public class PlayerHandler {
 	public void addPlayersToTeams() {
 		for (Player p: players) {
 			if (getTeam(p) == null) {
-				for (TeamColor c: teams) {
-					if (getPlayersInTeam(c).size() < team_size) {
-						setTeam(p, c);
-						break;
-					}
-				}
+				TeamColor teamToJoin = teams.stream().min(Comparator.comparingInt(t -> getPlayersInTeam(t).size())).get();
+				if(teamToJoin != null && getPlayersInTeam(teamToJoin).size() < team_size)setTeam(p, teamToJoin);
 			}
 		}
 	}

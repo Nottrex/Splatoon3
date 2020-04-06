@@ -1,12 +1,12 @@
 package game.util;
 
-import java.lang.reflect.Field;
-
+import game.GameState;
 import net.minecraft.server.v1_15_R1.IChatBaseComponent;
 import net.minecraft.server.v1_15_R1.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_15_R1.PlayerConnection;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -22,7 +22,9 @@ public class PlayerUtil {
 		p.setFireTicks(0);
 		p.setExp(0);
 		p.setLevel(0);
-		
+
+		if(Util.GAME.getGameState() == GameState.INGAME) p.getInventory().setChestplate(new ItemBuilder(Material.LEATHER_CHESTPLATE).color(Util.GAME.getPlayerHandler().getTeam(p).getColor()).build());
+
 		for (PotionEffectType type: PotionEffectType.values()) {
 			if (type != null && p.hasPotionEffect(type)) p.removePotionEffect(type);
 		}
