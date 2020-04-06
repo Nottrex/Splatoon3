@@ -21,37 +21,33 @@ public class GameMap {
 	private int team_count;
 	private int team_size;
 	
-	public GameMap(String name, Plugin plugin) {		
+	private GameMap(String name, Plugin plugin) {
 		teamSpawns = new ArrayList<Location>();
 		
 		File f = new File(plugin.getDataFolder(), name+".yml");
-		if(f.exists()){
-			
-			Util.LOGGER.log(Level.INFO, "MapConfiguration found: " + name);
-			YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
-			
-			name = config.getString("Worldname");
-			team_count = config.getInt("teams");
-			team_size = config.getInt("players");
-			corner1 = ConfigUtil.getLocation(config, "corner1");
-			corner2 = ConfigUtil.getLocation(config, "corner2");
-			
-			for(int i = 0; i < team_count; i++){
-				teamSpawns.add(ConfigUtil.getLocation(config, "teamSpawn"+i));
-			}
-			
-			World map = WorldUtil.changeWorld(corner1.getWorld().getName(), "world_copy");
-			
-			WorldUtil.prepareWorld(map);
-			
-			corner1.setWorld(map);
-			corner2.setWorld(map);
-			for (Location l: teamSpawns) {
-				l.setWorld(map);
-			}
-		} else {
-			Util.LOGGER.log(Level.WARNING, "MapConfiguration not found: " + name);
+
+		YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
+
+		name = config.getString("Worldname");
+		team_count = config.getInt("teams");
+		team_size = config.getInt("players");
+		corner1 = ConfigUtil.getLocation(config, "corner1");
+		corner2 = ConfigUtil.getLocation(config, "corner2");
+
+		for(int i = 0; i < team_count; i++){
+			teamSpawns.add(ConfigUtil.getLocation(config, "teamSpawn"+i));
 		}
+
+		World map = WorldUtil.changeWorld(corner1.getWorld().getName(), "world_copy");
+
+		WorldUtil.prepareWorld(map);
+
+		corner1.setWorld(map);
+		corner2.setWorld(map);
+		for (Location l: teamSpawns) {
+			l.setWorld(map);
+		}
+
 		
 		if (team_count == 2) {
 			Location black = teamSpawns.get(0);
@@ -101,5 +97,16 @@ public class GameMap {
 	
 	public Location getCenter() {
 		return corner1.add(corner2).multiply(0.5);
+	}
+
+	public static GameMap getMap(String name, Plugin plugin) {
+		File f = new File(plugin.getDataFolder(), name+".yml");
+		if(f.exists()){
+			Util.LOGGER.log(Level.INFO, "MapConfiguration found: " + name);
+			return new GameMap(name, plugin);
+		} else {
+			Util.LOGGER.log(Level.WARNING, "MapConfiguration not found: " + name);
+			return null;
+		}
 	}
 }

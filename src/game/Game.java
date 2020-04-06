@@ -105,7 +105,7 @@ public class Game implements Listener {
 	}
 	
 	public void start() {		
-		loadMaps();
+		selectRandomMaps();
 		
 		playerHandler = new PlayerHandler(this, getTeamCount(), getTeamSize());
 		scoreboard = new ScoreBoard(this);
@@ -117,7 +117,21 @@ public class Game implements Listener {
 			playerHandler.addPlayer(p);
 		}
 	}
-	
+
+	public void start(String mapName) {
+		setGameMap(mapName);
+
+		playerHandler = new PlayerHandler(this, getTeamCount(), getTeamSize());
+		scoreboard = new ScoreBoard(this);
+
+		gamestate = GameState.LOBBY;
+		state = new GameStateLobby(this, plugin);
+
+		for (Player p: Bukkit.getOnlinePlayers()) {
+			playerHandler.addPlayer(p);
+		}
+	}
+
 	@EventHandler
 	public void onGameStateFinish(GameStateFinishEvent event) {
 		switch (event.getGameState()) {
@@ -178,18 +192,28 @@ public class Game implements Listener {
 		lobby.setWorld(lobby_world);
 	}
 	
-	private void loadMaps() {
+	private void selectRandomMaps() {
 		List<String> maps = new ArrayList<String>();
 		
 		FileConfiguration config = plugin.getConfig();
 		
-		for(int i = 0; i < config.getInt("MapsCount"); i++){
+		for(int i = 0; i < config.getInt("MapsCount"); i++) {
 			maps.add( config.getString("Map"+i));
 		}
     	
-		this.map = new GameMap(maps.get(Util.RANDOM.nextInt(maps.size())), plugin);
+		setGameMap(maps.get(Util.RANDOM.nextInt(maps.size())));
 	}
-	
+
+	public boolean setGameMap(String name) {
+		GameMap map = GameMap.getMap(name, plugin);
+		if(map != null) {
+			this.map = map;
+			return true;
+		}
+
+		return false;
+	}
+
 	public Location getLobby(){
 		return lobby;
 	}

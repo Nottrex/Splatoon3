@@ -113,6 +113,30 @@ public class Main extends JavaPlugin implements Listener {
 			ChatUtil.sendMessage(sender, "You stopped the Game!");
 			return true;
 		}
+
+		//>---| FORCEMAP |---<\\
+
+		else if (commandlabel.equalsIgnoreCase("forcemap")) {
+			if(!sender.hasPermission("splatoon.forcemap")){
+				ChatUtil.sendErrorMessage(sender, ChatUtil.ERROR_NOT_ENOUGH_PERMISSIONS);
+				return true;
+			}
+
+			if (args.length == 0) {
+				ChatUtil.sendErrorMessage(sender, "Not enough arguments!");
+				return true;
+			}
+
+			if(game.getGameState() != GameState.LOBBY){
+				ChatUtil.sendErrorMessage(sender, "Game already started!");
+				return true;
+			}
+
+			game.stop();
+			game.start(args[0]);
+			ChatUtil.sendMessage(sender, "You changed the map to " + args[0]);
+			return true;
+		}
 				
 		//>---| OP COMMANDS |---<\\
 		 		

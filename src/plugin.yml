@@ -10,6 +10,9 @@ commands:
   stopgame:
     description: Stops the game
     usage: /stopgame
+  forcemap:
+    description: Changes map
+    usage: /splatoon <mapName>
   splatoon:
     description: OP and Dev Commands
     usage: /splatoon <command> <data>
